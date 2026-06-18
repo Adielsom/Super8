@@ -17,7 +17,7 @@ Como o sistema é processado em PHP puro e manipula arquivos diretamente na past
 4. Abra o seu navegador e acesse a URL: `http://localhost/Super8/`
 5. O sistema iniciará na tela inicial. Para começar, clique no botão **"Novo Torneio"**.
 
-**⚠️ Nota sobre permissões:** O PHP precisa criar, ler e editar arquivos dentro da pasta `data/` (onde ficam o `participantes.json`, `rodadas.json` e `historico.json`). 
+**Nota sobre permissões:** O PHP precisa criar, ler e editar arquivos dentro da pasta `data/` (onde ficam o `participantes.json`, `rodadas.json` e `historico.json`). 
 Em instalações padrão do Windows isso não é problema, mas em ambientes Linux/Mac, garanta que a pasta `data/` tenha permissão de escrita (`chmod 777`).
 
 ---
