@@ -60,3 +60,6 @@ Como é comum que muitos jogadores terminem o torneio com a mesma quantidade de 
 * **Histórico de Torneios:** Os torneios não somem ao serem finalizados. Eles são compactados e armazenados em um arquivo de histórico para consulta futura.
 * **Impressão/PDF do Ranking:** Regras específicas de `@media print` no CSS para limpar a interface e imprimir apenas a tabela de forma profissional.
 * **Correção de Placares:** Tela de edição para corrigir erros de digitação do organizador em rodadas passadas.
+
+*  **LINK PARA VIDEO NO YOUTUBE
+*  https://www.youtube.com/watch?v=xivYc2M7LRw
