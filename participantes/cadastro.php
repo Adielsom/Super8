@@ -190,7 +190,7 @@ $temTorneio = file_exists('../data/participantes.json');
             <?php if ($temTorneio): ?>
                 <a href="../rodadas/rodadas.php">Partidas</a>
             <?php endif; ?>
-            <a href="../classificacao/classificacao.php">Ranking</a>
+            <a href="../classificacao/classificacao.php">Classificação</a>
             <a href="../historico/historico.php">Histórico</a>
         </div>
     </nav>

@@ -245,7 +245,8 @@ foreach ($participantes as $p) {
         <div class="nav-links">
             <a href="../index.php">Início</a>
             <a href="rodadas.php">Partidas</a>
-            <a href="../classificacao/classificacao.php">Ranking</a>
+            <a href="../classificacao/classificacao.php">Classificação</a>
+            <a href="../historico/historico.php">Histórico</a>
         </div>
     </nav>
 

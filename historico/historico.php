@@ -225,7 +225,7 @@ $temTorneio = file_exists('../data/participantes.json');
             <?php else: ?>
                 <a href="../participantes/cadastro.php">Novo Torneio</a>
             <?php endif; ?>
-            <a href="../classificacao/classificacao.php">Ranking</a>
+            <a href="../classificacao/classificacao.php">Classificação</a>
             <a href="historico.php">Histórico</a>
         </div>
     </nav>

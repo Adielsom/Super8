@@ -5,13 +5,12 @@ require_once '../utils/pontuacao.php';
 $participantes = ler_json('../data/participantes.json');
 $torneio = ler_json('../data/rodadas.json');
 
-$temTorneio = !empty($participantes);
-
-if ($temTorneio) {
-    $classificacao = calcular_classificacao($participantes, $torneio);
-} else {
-    $classificacao = [];
+if (empty($participantes)) {
+    header('Location: ../participantes/cadastro.php');
+    exit;
 }
+
+$classificacao = calcular_classificacao($participantes, $torneio);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -21,13 +20,12 @@ if ($temTorneio) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classificação - Super 8</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap');
 
         :root {
             --primary: #003049;
             --secondary: #d62828;
             --accent: #80ed99;
-            --accent-hover: #57cc99;
             --bg: #fdfcdc;
             --text-dark: #001219;
             --card-bg: rgba(255, 255, 255, 0.95);
@@ -117,12 +115,13 @@ if ($temTorneio) {
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             overflow-x: auto;
+            border: 2px solid #eef2f5;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px;
+            min-width: 600px;
         }
 
         th,
@@ -161,7 +160,7 @@ if ($temTorneio) {
         .pos-1 {
             color: #d4af37;
             font-size: 1.2rem;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .pos-2 {
@@ -178,67 +177,59 @@ if ($temTorneio) {
 
         .pts-highlight {
             color: var(--primary);
-            font-weight: 800;
-            font-size: 1.1rem;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            color: #666;
-        }
-
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            padding: 12px 25px;
-            color: white;
-            text-decoration: none;
+            font-weight: 900;
+            font-size: 1.2rem;
+            background: rgba(0, 48, 73, 0.05);
             border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.3s;
-            cursor: pointer;
+        }
+
+        button.btn-print {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto 0;
+            padding: 15px;
+            background-color: var(--primary);
+            color: #ffffff;
             border: none;
-            font-size: 1rem;
-            font-family: 'Nunito', sans-serif;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0, 48, 73, 0.2);
         }
 
-        .btn-start {
-            background: var(--primary);
-            margin-right: 10px;
-        }
-
-        .btn-start:hover {
-            background: #001f30;
-        }
-
-        .btn-print {
-            background: var(--secondary);
-        }
-
-        .btn-print:hover {
-            background: #b01b1b;
-        }
-
-        .btn-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
+        button.btn-print:hover {
+            background-color: #001f30;
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
+
+            th,
+            td {
+                padding: 10px 5px;
+                font-size: 0.9rem;
+            }
+
+            .pos-1,
+            .pos-2,
+            .pos-3,
+            .pts-highlight {
+                font-size: 1rem;
+            }
         }
 
         @media print {
 
             .navbar,
-            .btn-action,
-            .empty-state {
+            button.btn-print {
                 display: none !important;
             }
 
@@ -247,29 +238,19 @@ if ($temTorneio) {
                 color: black;
             }
 
-            .container {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                max-width: 100%;
-            }
-
             .table-container {
                 box-shadow: none;
-                border: none;
-                padding: 0;
+                border: 1px solid #ccc;
             }
 
             .header-title {
                 color: black;
-                margin-top: 0;
             }
         }
     </style>
 </head>
 
 <body>
-
     <nav class="navbar">
         <a href="../index.php" class="nav-brand">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
@@ -282,34 +263,17 @@ if ($temTorneio) {
         </a>
         <div class="nav-links">
             <a href="../index.php">Início</a>
-            <?php if ($temTorneio): ?>
-                <a href="../rodadas/rodadas.php">Partidas</a>
-            <?php else: ?>
-                <a href="../participantes/cadastro.php">Novo Torneio</a>
-            <?php endif; ?>
-            <a href="classificacao.php">Ranking</a>
+            <a href="../rodadas/rodadas.php">Partidas</a>
+            <a href="classificacao.php">Classificação</a>
             <a href="../historico/historico.php">Histórico</a>
         </div>
     </nav>
 
     <main class="container">
-        <h1 class="header-title">Classificação Atual</h1>
+        <h1 class="header-title">Classificação Geral</h1>
 
-        <div class="table-container">
-            <?php if (empty($classificacao)): ?>
-                <div class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-                        stroke="#ccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                        style="margin-bottom: 15px;">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="3" y1="9" x2="21" y2="9"></line>
-                        <line x1="9" y1="21" x2="9" y2="9"></line>
-                    </svg>
-                    <h2>Nenhum torneio em andamento</h2>
-                    <p>Cadastre os jogadores para visualizar o ranking.</p>
-                    <a href="../participantes/cadastro.php" class="btn-action btn-start">Começar Torneio</a>
-                </div>
-            <?php else: ?>
+        <?php if (!empty($classificacao)): ?>
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -331,34 +295,30 @@ if ($temTorneio) {
                                     class="<?= $index == 0 ? 'pos-1' : ($index == 1 ? 'pos-2' : ($index == 2 ? 'pos-3' : '')) ?>">
                                     <?= $index + 1 ?>º
                                 </td>
-                                <td style="text-align: left; font-weight: 800; color: var(--primary);"><?= $jogador['nome'] ?>
-                                </td>
+                                <td style="text-align: left; font-weight: 800; color: var(--primary);">
+                                    <?= htmlspecialchars($jogador['nome']) ?></td>
                                 <td><?= $jogador['jogos'] ?></td>
                                 <td><?= $jogador['vitorias'] ?></td>
                                 <td><?= $jogador['derrotas'] ?></td>
                                 <td><?= $jogador['games_vencidos'] ?></td>
                                 <td><?= $jogador['games_perdidos'] ?></td>
-                                <td><?= $jogador['games_vencidos'] - $jogador['games_perdidos'] ?></td>
+                                <td style="font-weight: 800;"><?= $jogador['games_vencidos'] - $jogador['games_perdidos'] ?>
+                                </td>
                                 <td class="pts-highlight"><?= $jogador['pontos'] ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <div style="text-align: center; margin-top: 20px;">
-                    <button onclick="window.print()" class="btn-action btn-print">
-                        <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <rect x="6" y="14" width="12" height="8"></rect>
-                        </svg>
-                        Imprimir / Gerar PDF
-                    </button>
-                </div>
-            <?php endif; ?>
-        </div>
-    </main>
+            </div>
 
+            <button type="button" class="btn-print" onclick="window.print()">Imprimir Ranking (PDF)</button>
+        <?php else: ?>
+            <div style="text-align: center; color: #666; margin-top: 50px;">
+                <h2>Nenhum torneio em andamento.</h2>
+                <p>Volte ao início e cadastre os participantes.</p>
+            </div>
+        <?php endif; ?>
+    </main>
 </body>
 
 </html>
